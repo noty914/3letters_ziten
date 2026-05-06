@@ -1,0 +1,64 @@
+---
+import '@/styles/global.css';
+import AlphabetNav from '@/components/AlphabetNav.astro';
+import ThemeToggle from '@/components/ThemeToggle.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  activeLetter?: string;
+}
+
+const { title, description = 'IT・AI の3文字略語を、初級・中級・上級で読む辞典。', activeLetter } = Astro.props;
+const canonical = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="ja" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <script is:inline>
+      (function () {
+        try {
+          var m = localStorage.getItem('theme');
+          var root = document.documentElement;
+          if (m === 'light' || m === 'dark' || m === 'system') {
+            root.setAttribute('data-theme', m);
+            root.style.colorScheme =
+              m === 'dark' ? 'dark' : m === 'light' ? 'light' : 'light dark';
+          } else {
+            root.setAttribute('data-theme', 'dark');
+            root.style.colorScheme = 'dark';
+          }
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.style.colorScheme = 'dark';
+        }
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="canonical" href={new URL(canonical, Astro.site).href} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="inner">
+        <div class="brand">
+          <a href="/">3文字 IT・AI 辞典</a>
+        </div>
+        <div class="header-actions">
+          <nav class="header-nav" aria-label="メイン">
+            <a href="/">トップ</a>
+          </nav>
+          <ThemeToggle />
+        </div>
+      </div>
+    </header>
+    <AlphabetNav activeLetter={activeLetter} />
+    <slot />
+    <footer class="site-footer">
+      <small>ひな形（静的サイト）。一般公開・マネタイズ前提で拡張してください。</small>
+    </footer>
+  </body>
+</html>

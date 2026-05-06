@@ -1,0 +1,36 @@
+---
+import type { TermEntry } from '@/lib/related';
+import { termMap } from '@/lib/related';
+
+interface Props {
+  relatedSlugs: string[];
+  allTerms: TermEntry[];
+}
+
+const { relatedSlugs, allTerms } = Astro.props;
+const map = termMap(allTerms);
+const items = relatedSlugs
+  .map((slug) => {
+    const entry = map.get(slug);
+    if (!entry) return null;
+    return { slug, titleJa: entry.data.titleJa };
+  })
+  .filter(Boolean) as { slug: string; titleJa: string }[];
+---
+
+{
+  items.length > 0 && (
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="page-title" style="font-size: 1.15rem;">
+        関連用語
+      </h2>
+      <ul class="related-list">
+        {items.map(({ slug, titleJa }) => (
+          <li>
+            <a href={`/terms/${slug}/`}>{titleJa}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

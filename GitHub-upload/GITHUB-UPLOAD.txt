@@ -1,0 +1,10 @@
+■ やること（3つだけ）
+
+1) ダブルクリック → Run-GitHubUpload.bat
+2) できた GitHub-upload.zip を GitHub のリポジトリにドラッグでアップロード
+3) GitHub → Settings → Pages → Source を「GitHub Actions」にする
+
+■ サイトの URL
+
+https://あなたのユーザー名.github.io/リポジトリ名/
+（Actions が緑になったあと、Settings → Pages に表示されます）

@@ -1,0 +1,13 @@
+---
+import { marked } from 'marked';
+
+interface Props {
+  markdown: string;
+  class?: string;
+}
+
+const { markdown, class: className } = Astro.props;
+const html = markdown ? marked.parse(markdown, { async: false }) : '';
+---
+
+<div class:list={['markdown-body', className]} set:html={html} />

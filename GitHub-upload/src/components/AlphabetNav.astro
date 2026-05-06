@@ -1,0 +1,30 @@
+---
+interface Props {
+  activeLetter?: string;
+}
+
+const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const { activeLetter } = Astro.props;
+---
+
+<section class="alphabet-strip" aria-label="アルファベット索引">
+  <p class="label">A–Z</p>
+  <div class="alphabet-grid">
+    {
+      LETTERS.map((L) => {
+        const lower = L.toLowerCase();
+        const varName = `--az-${L}`;
+        return (
+          <a
+            href={`/letter/${lower}/`}
+            class:list={['az-link', { active: activeLetter === lower }]}
+            style={`color: var(${varName});`}
+            aria-current={activeLetter === lower ? 'page' : undefined}
+          >
+            {L}
+          </a>
+        );
+      })
+    }
+  </div>
+</section>

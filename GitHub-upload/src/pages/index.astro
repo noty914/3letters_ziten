@@ -1,0 +1,90 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { termSlug } from '@/lib/term-id';
+
+const terms = (await getCollection('terms')).sort((a, b) =>
+  termSlug(a.id).localeCompare(termSlug(b.id), 'en'),
+);
+
+function searchBlob(t: (typeof terms)[number]): string {
+  return [
+    termSlug(t.id),
+    t.data.titleJa,
+    t.data.titleEn,
+    ...(t.data.tags ?? []),
+  ]
+    .join(' ')
+    .toLowerCase();
+}
+---
+
+<BaseLayout title="3文字 IT・AI 辞典" description="非エンジニア向けの略語辞典。初級・中級・上級の三層で読めます。">
+  <main class="container">
+    <h1 class="page-title">3文字 IT・AI 辞典</h1>
+    <p class="lede">
+      よく使われる略語を、<strong>①初級</strong>（会議やニュースでの見え方）、<strong>②中級</strong>（仕組みの輪郭）、<strong>③上級</strong>（技術寄りのニュアンス）に分けて整理します。正式名称は英語併記です。
+    </p>
+    <p class="lede">
+      上部の <strong>A–Z</strong> から頭文字で絞り込み、検索、または下の一覧から用語を選んでください。
+    </p>
+
+    <form class="term-search-form" role="search" aria-label="用語検索">
+      <label for="term-search">用語を検索</label>
+      <input
+        id="term-search"
+        type="search"
+        name="q"
+        autocomplete="off"
+        placeholder="略語・日本語・英語・タグの一部"
+        enterkeyhint="search"
+      />
+    </form>
+    <p id="search-empty" class="search-empty" role="status">
+      一致する用語がありません。別のキーワードを試してください。
+    </p>
+
+    <h2 class="page-title" style="font-size: 1.2rem; margin-top: 2rem;">用語一覧（ひな形サンプル）</h2>
+    <ul id="term-list" class="card-list">
+      {
+        terms.map((t) => (
+          <li data-search={searchBlob(t)}>
+            <a href={`/terms/${termSlug(t.id)}/`}>
+              {t.data.titleJa}{' '}
+              <span style="color: var(--muted); font-weight: 600;">
+                {termSlug(t.id).toUpperCase()}
+              </span>
+              <span class="meta">{t.data.titleEn}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</BaseLayout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function () {
+    var input = document.getElementById('term-search');
+    var list = document.getElementById('term-list');
+    var empty = document.getElementById('search-empty');
+    if (!input || !list) return;
+    var items = list.querySelectorAll('li[data-search]');
+    function run() {
+      var q = (input.value || '').trim().toLowerCase();
+      var n = 0;
+      for (var i = 0; i < items.length; i++) {
+        var li = items[i];
+        var hay = (li.getAttribute('data-search') || '').toLowerCase();
+        var show = !q || hay.indexOf(q) !== -1;
+        li.style.display = show ? '' : 'none';
+        if (show) n++;
+      }
+      if (empty) {
+        empty.classList.toggle('is-visible', q.length > 0 && n === 0);
+      }
+    }
+    input.addEventListener('input', run);
+    input.addEventListener('search', run);
+  });
+</script>

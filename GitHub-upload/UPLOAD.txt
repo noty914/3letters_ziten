@@ -1,0 +1,25 @@
+GitHub に ZIP で載せるファイルの「正本」について
+========================================
+
+■ ワークフロー（GitHub Actions）
+  ファイル: deploy/github-pages-deploy.yml
+  GitHub では必ず次のパスに置く必要があります:
+    .github/workflows/deploy.yml
+
+  エクスプローラで .github が見えなくても大丈夫です。
+  プロジェクトのルートで次を実行してください:
+
+    powershell -ExecutionPolicy Bypass -File .\scripts\Prepare-GitHubUpload.ps1
+
+  → フォルダ「GitHubUpload」が作られ、その中に .github 含む必要一式が入ります。
+  → あわせてローカルの .github/workflows/deploy.yml も同じ内容に同期されます。
+
+■ ZIP の作り方
+  1) GitHubUpload を開く
+  2) 中のすべて（package.json, src, data, .github ...）を選択
+  3) 右クリック → 送る → 圧縮 (zip) などで ZIP 化
+     ※「GitHubUpload」というフォルダ名自体は ZIP の中のルートに含めない
+        （ZIP を解凍した直下に package.json と .github が並ぶようにする）
+
+■ GitHub 側
+  Settings → Pages → Build and deployment の Source を「GitHub Actions」にする。

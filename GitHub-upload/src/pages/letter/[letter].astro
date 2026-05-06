@@ -1,0 +1,59 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { termSlug } from '@/lib/term-id';
+
+export async function getStaticPaths() {
+  const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+  return letters.map((letter) => ({ params: { letter } }));
+}
+
+const { letter } = Astro.params;
+const all = await getCollection('terms');
+const terms = all
+  .filter((t) => termSlug(t.id).toLowerCase().startsWith(letter ?? ''))
+  .sort((a, b) => termSlug(a.id).localeCompare(termSlug(b.id), 'en'));
+
+const letterUpper = (letter ?? '').toUpperCase();
+const title = `${letterUpper} で始まる用語`;
+const azKey = /^[A-Z]$/.test(letterUpper) ? letterUpper : null;
+---
+
+<BaseLayout title={title} activeLetter={letter}>
+  <main class="container">
+    <h1 class="page-title letter-page-title" aria-label={azKey ? title : undefined}>
+      {
+        azKey ? (
+          <span aria-hidden="true">
+            <span class="letter-page-title__az" style={`color: var(--az-${azKey});`}>
+              {azKey}
+            </span>
+            <span class="letter-page-title__rest">で始まる用語</span>
+          </span>
+        ) : (
+          title
+        )
+      }
+    </h1>
+    <p class="lede">該当 {terms.length} 件</p>
+    {
+      terms.length === 0 ? (
+        <p>まだこの文字では登録がありません。別の文字を選ぶか、用語を追加してください。</p>
+      ) : (
+        <ul class="card-list">
+          {terms.map((t) => (
+            <li>
+              <a href={`/terms/${termSlug(t.id)}/`}>
+                {t.data.titleJa}{' '}
+                <span style="color: var(--muted); font-weight: 600;">
+                  {termSlug(t.id).toUpperCase()}
+                </span>
+                <span class="meta">{t.data.titleEn}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </main>
+</BaseLayout>

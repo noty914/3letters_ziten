@@ -1,0 +1,38 @@
+---
+import MarkdownHtml from '@/components/MarkdownHtml.astro';
+
+interface Props {
+  intermediateMd: string;
+  advancedMd: string;
+}
+
+const { intermediateMd, advancedMd } = Astro.props;
+---
+
+{
+  intermediateMd && (
+    <details class="term-tier" data-tier="intermediate">
+      <summary>中級（②）</summary>
+      <div class="tier-body">
+        <div class="ad-slot" role="note" aria-label="広告枠（プレースホルダー）">
+          広告バナー枠（アコーディオンを開いた読者にのみ表示）
+        </div>
+        <MarkdownHtml markdown={intermediateMd} />
+      </div>
+    </details>
+  )
+}
+
+{
+  advancedMd && (
+    <details class="term-tier" data-tier="advanced">
+      <summary>上級（③）</summary>
+      <div class="tier-body">
+        <div class="ad-slot" role="note" aria-label="広告枠（プレースホルダー）">
+          広告バナー枠（アコーディオンを開いた読者にのみ表示）
+        </div>
+        <MarkdownHtml markdown={advancedMd} />
+      </div>
+    </details>
+  )
+}

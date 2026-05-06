@@ -1,0 +1,119 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import MarkdownHtml from '@/components/MarkdownHtml.astro';
+import TierAccordions from '@/components/TierAccordions.astro';
+import RelatedTerms from '@/components/RelatedTerms.astro';
+import { splitMarkdownTiers } from '@/lib/split-tiers';
+import { missingRelatedSlugs } from '@/lib/related';
+import { termSlug } from '@/lib/term-id';
+import { buildEnglishTitleSegments } from '@/lib/english-initial';
+
+export async function getStaticPaths() {
+  const terms = await getCollection('terms');
+  return terms.map((entry) => ({
+    params: { slug: termSlug(entry.id) },
+  }));
+}
+
+const { slug } = Astro.params;
+if (!slug) {
+  return Astro.redirect('/404');
+}
+
+const terms = await getCollection('terms');
+const entry = terms.find((t) => termSlug(t.id) === slug);
+if (!entry) {
+  return Astro.redirect('/404');
+}
+
+const tiers = splitMarkdownTiers(entry.body ?? '');
+const broken = missingRelatedSlugs(terms, entry.data.related);
+if (broken.length > 0) {
+  console.warn(
+    `[terms/${entry.id}] related に存在しない id: ${broken.join(', ')}`,
+  );
+}
+
+const letter = termSlug(entry.id)[0]?.toLowerCase() ?? undefined;
+const pageTitle = `${entry.data.titleJa}（${termSlug(entry.id).toUpperCase()}）`;
+const description = `${entry.data.titleEn} — 初級・中級・上級の解説。`;
+const enSegments = buildEnglishTitleSegments(entry.data.titleEn);
+---
+
+<BaseLayout title={pageTitle} description={description} activeLetter={letter}>
+  <main class="container">
+    <article>
+      <h1 class="page-title">{entry.data.titleJa}</h1>
+      {
+        enSegments ? (
+          <p
+            class="title-en-line"
+            lang="en"
+            aria-label={entry.data.titleEn}
+          >
+            <span aria-hidden="true">
+              {
+                enSegments.map((seg) =>
+                  seg.type === 'text' ? (
+                    <span class="title-en__plain">{seg.text}</span>
+                  ) : (
+                    <span
+                      class="title-en__initial"
+                      style={`color: var(--az-${seg.letter});`}
+                    >
+                      {seg.letter}
+                    </span>
+                  ),
+                )
+              }
+            </span>
+          </p>
+        ) : (
+          <p class="title-en-line" lang="en">
+            {entry.data.titleEn}
+          </p>
+        )
+      }
+      {
+        entry.data.tags?.length > 0 && (
+          <p class="lede" style="margin-top: -0.5rem;">
+            タグ:{' '}
+            {entry.data.tags.map((tag) => (
+              <span style="margin-right: 0.5rem;">#{tag}</span>
+            ))}
+          </p>
+        )
+      }
+
+      <section class="primary-block" aria-labelledby="primary-heading">
+        <h2 id="primary-heading" class="page-title" style="font-size: 1.15rem;">
+          初級（①）
+        </h2>
+        {
+          tiers.primary ? (
+            <MarkdownHtml markdown={tiers.primary} />
+          ) : (
+            <p class="lede">
+              本文に <code>## 初級</code> 見出しがありません。{' '}
+              <code>src/content/terms/{entry.id}</code> を確認してください。
+            </p>
+          )
+        }
+      </section>
+
+      <TierAccordions
+        intermediateMd={tiers.intermediate}
+        advancedMd={tiers.advanced}
+      />
+
+      <RelatedTerms relatedSlugs={entry.data.related} allTerms={terms} />
+
+      <p class="lede" style="margin-top: 2rem;">
+        <a href={`/letter/${letter}/`}>← {letter?.toUpperCase()} の索引へ</a>
+        {' · '}
+        <a href="/">トップへ</a>
+      </p>
+    </article>
+  </main>
+</BaseLayout>
