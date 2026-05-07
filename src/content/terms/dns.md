@@ -1,13 +1,15 @@
 ---
 titleJa: DNS
 titleEn: Domain Name System
-tags: [インフラ, ネットワーク]
-related: [http]
+tags: [ネットワーク]
+related: [api]
 ---
 
 ## 初級
 
-`example.com` のような名前を、機械が使う住所（IP アドレス）に変える仕組みです。
+ドメイン名を IP アドレスへ変える仕組み。
+
+`example.com` のような人が読める名前を、機械がつなぐための住所（IP）に対応づけます。サイトを開くときに裏で動いています。
 
 補足（比喩）：電話帳で名前から番号を引く作業に近いです。
 

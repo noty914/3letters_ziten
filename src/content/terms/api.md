@@ -1,13 +1,15 @@
 ---
 titleJa: API
 titleEn: Application Programming Interface
-tags: [web, 連携]
-related: [http, dns]
+tags: [開発]
+related: [dns]
 ---
 
 ## 初級
 
-アプリが別のシステムに「データをください」「処理をお願いします」と頼むときの窓口です。
+別のシステムへ頼みごとをするときの窓口。
+
+プログラム同士がデータを渡したり処理を依頼したりするときの決まりです。Web では HTTP とセットで語られることが多いです。
 
 補足（比喩）：レストランの「メニュー」と「厨房へのオーダー方法」に近いです。
 

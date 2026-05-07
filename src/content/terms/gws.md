@@ -1,17 +1,19 @@
 ---
 titleJa: GWS
 titleEn: Google Workspace
-tags: [クラウド, コラボ]
-related: [gcp, http]
+tags: [クラウド]
+related: [gcp, dns]
 ---
 
 ## 初級
 
-Gmail や Drive などのセット名として会話に出ますが、正式名称は **Google Workspace**（旧 G Suite）です。略称と製品名の対応が曖昧になりやすいです。
+Gmail やカレンダー、Drive などを束ねたビジネス向けスイート。
+
+正式名称は **Google Workspace**（旧 G Suite）。クラウド上でメールやファイル共有をまとめて契約する話です。
 
 ## 中級
 
-契約 SKU、データ所在地、管理者コンソール、eDiscovery、Vault など「どこまでが自社データの主権か」が境界の論点になります。
+略称（GWS）と製品名の対応が曖昧になりやすいです。契約 SKU、データ所在地、管理者コンソール、eDiscovery、Vault など「どこまでが自社データの主権か」が境界の論点になります。
 
 ## 上級
 
