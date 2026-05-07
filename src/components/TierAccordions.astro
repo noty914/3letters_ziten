@@ -11,6 +11,7 @@ const { intermediateMd, advancedMd } = Astro.props;
 function formatFiveWOneH(md: string): string {
   const lines = md.split(/\r?\n/);
   const out: string[] = [];
+  let hasSection = false;
   const keyPattern =
     'Why｜[^:：]+|Who｜[^:：]+|When｜[^:：]+|Where｜[^:：]+|How｜[^:：]+';
   const iconMap: Record<string, string> = {
@@ -19,6 +20,11 @@ function formatFiveWOneH(md: string): string {
     When: '🕒',
     Where: '🌐',
     How: '🔧',
+  };
+
+  const addDividerIfNeeded = () => {
+    if (hasSection) out.push('---', '');
+    hasSection = true;
   };
 
   for (const line of lines) {
@@ -30,6 +36,7 @@ function formatFiveWOneH(md: string): string {
       new RegExp(`^\\s*-\\s*(${keyPattern})\\s*(?:[:：]\\s*(.+))?\\s*$`),
     );
     if (w1hMatched) {
+      addDividerIfNeeded();
       const label = w1hMatched[1];
       const description = w1hMatched[2]?.trim() ?? '';
       const key = label.split('｜')[0];
@@ -45,6 +52,7 @@ function formatFiveWOneH(md: string): string {
       /^\s*-\s*(できること｜[^:：]+)\s*(?:[:：]\s*(.+))?\s*$/,
     );
     if (canDoMatched) {
+      addDividerIfNeeded();
       out.push(`✨ ${canDoMatched[1]}`);
       out.push('');
       if (canDoMatched[2]) out.push(canDoMatched[2]);
@@ -56,6 +64,7 @@ function formatFiveWOneH(md: string): string {
       /^\s*-\s*(よくある誤解｜[^:：]+)\s*(?:[:：]\s*(.+))?\s*$/,
     );
     if (misconceptionMatched) {
+      addDividerIfNeeded();
       out.push(`⚠️ ${misconceptionMatched[1]}`);
       out.push('');
       if (misconceptionMatched[2]) out.push(misconceptionMatched[2]);

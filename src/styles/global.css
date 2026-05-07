@@ -391,6 +391,14 @@ details.term-tier[open] summary {
   margin: 0.5rem 0 0;
 }
 
+/* ②（中級）内の5W1H/+α区切り線 */
+details.term-tier[data-tier='intermediate'] .markdown-body hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  opacity: 0.7;
+  margin: 0.85rem 0 0.7rem;
+}
+
 .related-list {
   display: flex;
   flex-wrap: wrap;
