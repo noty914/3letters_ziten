@@ -22,31 +22,37 @@ function formatFiveWOneH(md: string): string {
   };
 
   for (const line of lines) {
+    // 表記ゆれ対応:
+    // - Why｜...: 本文
+    // - Why｜...：本文
+    // - Why｜...（次行に本文）
     const w1hMatched = line.match(
-      new RegExp(`^\\s*-\\s*(${keyPattern})\\s*[:：]\\s*(.+)\\s*$`),
+      new RegExp(`^\\s*-\\s*(${keyPattern})\\s*(?:[:：]\\s*(.+))?\\s*$`),
     );
     if (w1hMatched) {
       const key = w1hMatched[1].split('｜')[0];
       const icon = iconMap[key] ?? '◇';
       out.push(`${icon} ${w1hMatched[1]}`);
-      out.push(w1hMatched[2]);
+      if (w1hMatched[2]) out.push(w1hMatched[2]);
       out.push('');
       continue;
     }
 
     const canDoMatched = line.match(
-      /^\s*-\s*(できること｜[^:：]+)\s*[:：]?\s*$/,
+      /^\s*-\s*(できること｜[^:：]+)\s*(?:[:：]\s*(.+))?\s*$/,
     );
     if (canDoMatched) {
       out.push(`✨ ${canDoMatched[1]}`);
+      if (canDoMatched[2]) out.push(canDoMatched[2]);
       continue;
     }
 
     const misconceptionMatched = line.match(
-      /^\s*-\s*(よくある誤解｜[^:：]+)\s*[:：]?\s*$/,
+      /^\s*-\s*(よくある誤解｜[^:：]+)\s*(?:[:：]\s*(.+))?\s*$/,
     );
     if (misconceptionMatched) {
       out.push(`⚠️ ${misconceptionMatched[1]}`);
+      if (misconceptionMatched[2]) out.push(misconceptionMatched[2]);
       continue;
     }
 

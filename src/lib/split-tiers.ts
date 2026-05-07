@@ -22,15 +22,15 @@ export function splitMarkdownTiers(md: string): TierBlocks {
 
   for (const line of md.split(/\r?\n/)) {
     const trimmed = line.trim();
-    if (/^##\s*(初級|①)(\s|$)/.test(trimmed)) {
+    if (/^##\s*(初級|①|1)[)\.．]?(?:\s|$)/.test(trimmed)) {
       current = 'primary';
       continue;
     }
-    if (/^##\s*(中級|②)(\s|$)/.test(trimmed)) {
+    if (/^##\s*(中級|②|2)[)\.．]?(?:\s|$)/.test(trimmed)) {
       current = 'intermediate';
       continue;
     }
-    if (/^##\s*(上級|③)(\s|$)/.test(trimmed)) {
+    if (/^##\s*(上級|③|3)[)\.．]?(?:\s|$)/.test(trimmed)) {
       current = 'advanced';
       continue;
     }

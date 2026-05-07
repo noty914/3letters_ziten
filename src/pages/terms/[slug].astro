@@ -41,7 +41,7 @@ if (broken.length > 0) {
 const letter = termSlug(entry.id)[0]?.toLowerCase() ?? undefined;
 /** 検索結果・ブラウザタブ向け（「〇〇とは？」形式。サイト名は BaseLayout が付与） */
 const pageTitle = `${entry.data.titleJa}とは？`;
-const description = `「${entry.data.titleJa}」とは？ ${entry.data.titleEn}。初級・中級・上級で解説。${SITE_NAME}。`;
+const description = `「${entry.data.titleJa}」とは？ ${entry.data.titleEn}。①ざっくり概要・②ちょっと詳しく・③もっと知りたい人向けで解説。${SITE_NAME}。`;
 const enSegments = buildEnglishTitleSegments(entry.data.titleEn, termSlug(entry.id));
 ---
 
