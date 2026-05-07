@@ -17,6 +17,7 @@ const tags = collectAllTags(terms);
         tags.map((tag) => (
           <li>
             <a class="tag-pill tag-pill--large" href={withBase(`tags/${tagToParam(tag)}/`)}>
+              <span class="tag-pill__prefix">#</span>
               {tag}
             </a>
           </li>

@@ -83,6 +83,7 @@ const enSegments = buildEnglishTitleSegments(entry.data.titleEn, termSlug(entry.
             <span class="term-tags__label">タグ</span>
             {entry.data.tags.map((tag) => (
               <a class="tag-pill" href={withBase(`tags/${tagToParam(tag)}/`)}>
+                <span class="tag-pill__prefix">#</span>
                 {tag}
               </a>
             ))}

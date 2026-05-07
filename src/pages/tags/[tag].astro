@@ -31,7 +31,11 @@ const title = `タグ「${rawTag}」の用語`;
       <a href={withBase('')}>トップ</a>
     </p>
     <h1 class="page-title">
-      タグ: <span class="tag-pill tag-pill--inline">{rawTag}</span>
+      タグ:{' '}
+      <span class="tag-pill tag-pill--inline">
+        <span class="tag-pill__prefix">#</span>
+        {rawTag}
+      </span>
     </h1>
     <p class="lede">該当 {terms.length} 件</p>
     {
