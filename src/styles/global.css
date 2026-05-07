@@ -493,6 +493,25 @@ footer.site-footer {
   text-align: center;
 }
 
+.site-footer__links {
+  margin: 0 0 0.65rem;
+}
+
+.site-footer__links a {
+  color: var(--link);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.site-footer__links a:hover {
+  text-decoration: underline;
+  color: var(--link-hover, var(--link));
+}
+
+.privacy-article h2 {
+  margin-top: 1.75rem;
+}
+
 /* 詳細: 英語正式名の先頭3語の頭文字（インデックスと同色） */
 .title-en-line {
   margin: 0 0 1.5rem;

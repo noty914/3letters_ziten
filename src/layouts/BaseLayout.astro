@@ -53,6 +53,7 @@ const canonical = Astro.url.pathname;
           <nav class="header-nav" aria-label="メイン">
             <a href={withBase('')}>トップ</a>
             <a href={withBase('tags/')}>タグ</a>
+            <a href={withBase('privacy/')}>プライバシー</a>
           </nav>
           <ThemeToggle />
         </div>
@@ -61,6 +62,9 @@ const canonical = Astro.url.pathname;
     <AlphabetNav activeLetter={activeLetter} />
     <slot />
     <footer class="site-footer">
+      <p class="site-footer__links">
+        <a href={withBase('privacy/')}>プライバシーポリシー</a>
+      </p>
       <small>{SITE_FOOTER}</small>
     </footer>
   </body>
