@@ -1,8 +1,10 @@
 /**
- * 英語正式名（titleEn）を、略語スラッグに対応する頭文字を太字・大きめで並べられるよう分割する。
+ * 英語正式名（titleEn）を、用語スラッグの英字（例: zip -> Z I P）に対応する文字を
+ * titleEn 内で順番に強調できるよう分割する。
  *
- * 語はスペース・ハイフン類で分割する（例: Retrieval-Augmented → R と A を別語扱い）。
- * 強調する語数は min(略語の英字数, 語数)（略語が取れないときは先頭3語まで）。
+ * 例:
+ * - ZIP archive format -> Z I P を強調
+ * - Identity and Access Management -> I A M を強調
  */
 export type EnglishTitleSegment =
   | { type: 'text'; text: string }
@@ -10,82 +12,51 @@ export type EnglishTitleSegment =
 
 const MAX_HIGHLIGHT = 12;
 
-function tokenizeTitleEn(titleEn: string): string[] {
-  return titleEn.trim().split(/[\s\-–—]+/).filter(Boolean);
-}
-
-function segmentsSingleWord(w: string): EnglishTitleSegment[] {
-  let latinIndex = -1;
-  for (let i = 0; i < w.length; i++) {
-    const c = w[i];
-    if (c && /[A-Za-z]/.test(c)) {
-      latinIndex = i;
-      break;
-    }
-  }
-  if (latinIndex < 0) return [{ type: 'text', text: w }];
-  const ch = w[latinIndex]!;
-  const out: EnglishTitleSegment[] = [];
-  const before = w.slice(0, latinIndex);
-  const after = w.slice(latinIndex + 1);
-  if (before) out.push({ type: 'text', text: before });
-  out.push({ type: 'letter', letter: ch.toUpperCase() });
-  if (after) out.push({ type: 'text', text: after });
-  return out;
-}
-
 function slugLatinLetters(termSlug: string): string[] {
   const base = termSlug.replace(/\.md$/i, '').toLowerCase();
   return base.split('').filter((c) => /[a-z]/.test(c));
+}
+
+function splitBySlugLetters(titleEn: string, slugLetters: string[]): EnglishTitleSegment[] | null {
+  if (!titleEn.trim()) return null;
+  if (slugLetters.length === 0) return [{ type: 'text', text: titleEn }];
+
+  const out: EnglishTitleSegment[] = [];
+  let textBuffer = '';
+  let matchIndex = 0;
+
+  for (const ch of titleEn) {
+    const target = slugLetters[matchIndex];
+    const canMatch =
+      !!target && /[A-Za-z]/.test(ch) && ch.toLowerCase() === target.toLowerCase();
+
+    if (canMatch) {
+      if (textBuffer) {
+        out.push({ type: 'text', text: textBuffer });
+        textBuffer = '';
+      }
+      out.push({ type: 'letter', letter: target.toUpperCase() });
+      matchIndex += 1;
+      continue;
+    }
+
+    textBuffer += ch;
+  }
+
+  if (textBuffer) out.push({ type: 'text', text: textBuffer });
+
+  // 略語の全英字を titleEn 内で順に見つけられない場合は、安全に未強調表示へ戻す。
+  if (matchIndex < slugLetters.length) {
+    return [{ type: 'text', text: titleEn }];
+  }
+
+  return out.length > 0 ? out : [{ type: 'text', text: titleEn }];
 }
 
 export function buildEnglishTitleSegments(
   titleEn: string,
   termSlug: string,
 ): EnglishTitleSegment[] | null {
-  const words = tokenizeTitleEn(titleEn);
-  if (words.length === 0) return null;
-
-  if (words.length === 1) {
-    return segmentsSingleWord(words[0] ?? '');
-  }
-
-  const slugLetters = slugLatinLetters(termSlug);
-  const highlightCount = Math.min(
-    slugLetters.length > 0 ? slugLetters.length : 3,
-    words.length,
-    MAX_HIGHLIGHT,
-  );
-
-  const out: EnglishTitleSegment[] = [];
-
-  for (let wi = 0; wi < words.length; wi++) {
-    const w = words[wi] ?? '';
-    if (wi > 0) out.push({ type: 'text', text: ' ' });
-
-    let latinIndex = -1;
-    for (let i = 0; i < w.length; i++) {
-      const c = w[i];
-      if (c && /[A-Za-z]/.test(c)) {
-        latinIndex = i;
-        break;
-      }
-    }
-
-    const highlightThisWord = wi < highlightCount && latinIndex >= 0;
-
-    if (!highlightThisWord) {
-      out.push({ type: 'text', text: w });
-      continue;
-    }
-
-    const ch = w[latinIndex]!;
-    const before = w.slice(0, latinIndex);
-    const after = w.slice(latinIndex + 1);
-    if (before) out.push({ type: 'text', text: before });
-    out.push({ type: 'letter', letter: ch.toUpperCase() });
-    if (after) out.push({ type: 'text', text: after });
-  }
-
-  return out;
+  const slugLetters = slugLatinLetters(termSlug).slice(0, MAX_HIGHLIGHT);
+  return splitBySlugLetters(titleEn, slugLetters);
 }
