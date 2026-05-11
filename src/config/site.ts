@@ -5,7 +5,7 @@
  * **リポジトリ名 `three-letter-dictionary`** と揃えると分かりやすいです（GitHub でリネーム後、再デプロイ）。
  */
 /** サイト名（ヘッダ・フッター・検索結果の title に使用） */
-export const SITE_NAME = '3文字アルファベット辞典';
+export const SITE_NAME = '3文字略語辞典';
 
 /** トップのリード文（`set:html` 用。改行は `<br />`） */
 export const SITE_LEDE_PRIMARY =
