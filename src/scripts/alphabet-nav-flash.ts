@@ -1,6 +1,6 @@
 /** A–Z クリック時の短いフルスクリーン演出（各文字色 30% + 中央抜き） */
 
-const FLASH_MS = 150;
+const FLASH_MS = 120;
 
 let navigating = false;
 
