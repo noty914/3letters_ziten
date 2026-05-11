@@ -3,6 +3,7 @@ import '@/styles/global.css';
 import AlphabetNav from '@/components/AlphabetNav.astro';
 import ThemeToggle from '@/components/ThemeToggle.astro';
 import { withBase } from '@/lib/base-path';
+import { activeHeaderNav } from '@/lib/header-nav';
 import { SITE_DESCRIPTION, SITE_FOOTER, SITE_NAME } from '@/config/site';
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 
 const { title, description = SITE_DESCRIPTION, activeLetter } = Astro.props;
 const canonical = Astro.url.pathname;
+const headerNavActive = activeHeaderNav(canonical, import.meta.env.BASE_URL);
 
 /** 検索結果のタイトル用：ページ題にサイト名を付与（重複しないよう既に含む場合はそのまま） */
 const documentTitle = title.includes(SITE_NAME)
@@ -77,15 +79,34 @@ const useGa = Boolean(gaId);
     }
   </head>
   <body>
-    <header class="site-header">
+    <header class="site-header site-header--dictionary">
       <div class="inner">
-        <div class="brand">
-          <a href={withBase('')}>{SITE_NAME}</a>
-        </div>
+        <a class="brand brand__link" href={withBase('')}>
+          <span class="brand__mark-wrap">
+            <img
+              class="brand__mark"
+              src={withBase('images/brand-header.png')}
+              alt={SITE_NAME}
+              decoding="async"
+            />
+          </span>
+        </a>
         <div class="header-actions">
-          <nav class="header-nav" aria-label="メイン">
-            <a href={withBase('')}>トップ</a>
-            <a href={withBase('tags/')}>タグ</a>
+          <nav class="header-nav header-nav--index" aria-label="メイン">
+            <a
+              class:list={['header-tab', headerNavActive === 'top' && 'is-active']}
+              href={withBase('')}
+              aria-current={headerNavActive === 'top' ? 'page' : undefined}
+            >
+              トップ
+            </a>
+            <a
+              class:list={['header-tab', headerNavActive === 'tags' && 'is-active']}
+              href={withBase('tags/')}
+              aria-current={headerNavActive === 'tags' ? 'page' : undefined}
+            >
+              タグ
+            </a>
           </nav>
           <ThemeToggle />
         </div>

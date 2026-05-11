@@ -443,6 +443,27 @@ details.term-tier[data-tier='intermediate'] .markdown-body hr {
   background: var(--surface);
 }
 
+/* 参照トンマナ（ロゴの紺・白ベース・細罫線）。本文テーマとは独立 */
+.site-header.site-header--dictionary {
+  --dict-ink: #0c1829;
+  --dict-paper: #ffffff;
+  --dict-rule: rgba(12, 24, 41, 0.22);
+  --dict-rule-strong: rgba(12, 24, 41, 0.42);
+  /* 画像と同系：ごく薄い紺みを載せた紙（旧トーン） */
+  --dict-tab-idle: #eef1f5;
+  --dict-tab-active: #f7f8fa;
+  /* タブ：縁と下線（太めは filter / box-shadow の px で維持） */
+  --dict-tab-ring-idle: rgba(12, 24, 41, 0.82);
+  --dict-tab-bar-idle: rgba(12, 24, 41, 0.88);
+  /* PNG 内の上下の白を clip で削る */
+  --dict-brand-crop-top: 16%;
+  --dict-brand-crop-bottom: 16%;
+  background: var(--dict-paper);
+  border-bottom-color: var(--dict-rule-strong);
+  color: var(--dict-ink);
+  overflow: visible;
+}
+
 .site-header .inner {
   width: min(960px, calc(100% - 2rem));
   margin-inline: auto;
@@ -452,6 +473,14 @@ details.term-tier[data-tier='intermediate'] .markdown-body hr {
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+.site-header.site-header--dictionary .inner {
+  width: min(960px, calc(100% - 1rem));
+  align-items: center;
+  padding-block: 0.5rem 0.45rem;
+  gap: 0.4rem;
+  overflow: visible;
 }
 
 .header-actions {
@@ -468,29 +497,118 @@ details.term-tier[data-tier='intermediate'] .markdown-body hr {
   gap: 0.65rem 0.85rem;
 }
 
-.header-nav a {
-  font-size: 0.92rem;
-  font-weight: 600;
-}
-
-.brand {
-  font-weight: 800;
-  font-size: 1rem;
-  letter-spacing: -0.02em;
-}
-
-.brand a {
-  color: var(--text);
+.site-header.site-header--dictionary .brand__link {
+  display: block;
+  line-height: 0;
   text-decoration: none;
+  color: inherit;
 }
 
-.brand a:hover {
-  color: var(--text);
-  text-decoration: underline;
+.site-header.site-header--dictionary .brand__mark-wrap {
+  display: block;
+  line-height: 0;
 }
 
-.header-nav a:hover {
-  color: var(--link-hover, var(--link));
+.site-header.site-header--dictionary .brand__link:hover {
+  opacity: 0.9;
+}
+
+.site-header.site-header--dictionary .brand__mark {
+  display: block;
+  width: auto;
+  height: clamp(3.35rem, 20vmin, 5.75rem);
+  max-height: none;
+  -webkit-clip-path: inset(
+    var(--dict-brand-crop-top) 0 var(--dict-brand-crop-bottom) 0
+  );
+  clip-path: inset(var(--dict-brand-crop-top) 0 var(--dict-brand-crop-bottom) 0);
+}
+
+@media (max-width: 520px) {
+  .site-header.site-header--dictionary .brand__mark {
+    height: clamp(2.85rem, 15vmin, 3.75rem);
+  }
+}
+
+/* トップ・タグ：上辺にV字の凹み（付箋／索引のイメージ。clip-path） */
+.site-header.site-header--dictionary .header-actions {
+  overflow: visible;
+  gap: 0.4rem;
+}
+
+.site-header.site-header--dictionary .header-nav--index {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22rem;
+  margin: 0;
+  padding: 0.1rem 0 0;
+  list-style: none;
+  border: none;
+  overflow: visible;
+  font-family:
+    'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', 'Times New Roman', serif;
+}
+
+.site-header.site-header--dictionary .header-tab {
+  /* インラインのままだと clip-path が効かないことがある */
+  display: inline-block;
+  vertical-align: middle;
+  /* 底辺水平・耳＋中央V */
+  -webkit-clip-path: polygon(0% 100%, 100% 100%, 100% 6%, 50% 36%, 0% 6%);
+  clip-path: polygon(0% 100%, 100% 100%, 100% 6%, 50% 36%, 0% 6%);
+  /* 上は V 下まで空け、下は太線ぶん確保 → ラベルはやや下寄せ */
+  padding: 0.72rem 0.95rem 0.42rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+  text-decoration: none;
+  color: var(--dict-ink);
+  background: var(--dict-tab-idle);
+  border: none;
+  /* 縁取り（drop-shadow は clip に沿う）＋下線を太く濃く */
+  filter: drop-shadow(0 0 0 3.5px var(--dict-tab-ring-idle));
+  box-shadow: 0 5px 0 0 var(--dict-tab-bar-idle);
+  transition:
+    background 0.12s,
+    filter 0.12s,
+    box-shadow 0.12s;
+}
+
+.site-header.site-header--dictionary .header-tab:hover {
+  background: #e8ecf2;
+  color: var(--dict-ink);
+  text-decoration: none;
+  filter: drop-shadow(0 0 0 3.5px var(--dict-tab-ring-idle));
+  box-shadow: 0 5px 0 0 var(--dict-tab-bar-idle);
+}
+
+.site-header.site-header--dictionary .header-tab.is-active {
+  background: var(--dict-tab-active);
+  font-weight: 700;
+  filter: drop-shadow(0 0 0 3.5px var(--dict-ink));
+  box-shadow:
+    0 5px 0 0 var(--dict-ink),
+    inset 0 -4px 0 0 var(--dict-ink);
+}
+
+.site-header.site-header--dictionary .header-tab.is-active:hover {
+  background: var(--dict-tab-active);
+  filter: drop-shadow(0 0 0 3.5px var(--dict-ink));
+  box-shadow:
+    0 5px 0 0 var(--dict-ink),
+    inset 0 -4px 0 0 var(--dict-ink);
+}
+
+.site-header.site-header--dictionary .theme-toggle {
+  border-color: var(--dict-rule-strong);
+  color: var(--dict-ink);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.site-header.site-header--dictionary .theme-toggle:hover {
+  background: rgba(11, 22, 40, 0.07);
+  border-color: var(--dict-ink);
 }
 
 .home-intro {
