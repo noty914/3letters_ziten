@@ -2,7 +2,7 @@
 titleJa: ROI
 titleEn: Return on Investment
 tags: [経営]
-related: [ctr, cvr, kpi, qcd, rfp]
+related: [ctr, cvr, kpi, qcd, rfp, ltv]
 ---
 
 ## ① 非エンジニア向けのざっくり概要

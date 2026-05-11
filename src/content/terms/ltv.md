@@ -1,0 +1,35 @@
+---
+titleJa: LTV
+titleEn: Customer Lifetime Value
+tags: [マーケティング, 事業]
+related: [cvr, ctr, roi]
+---
+
+## ① 非エンジニア向けのざっくり概要
+
+1人の顧客が、取引期間全体でどれだけ価値（売上や利益）を生むかを表す指標。
+
+単発の売上ではなく、継続購入や解約率も含めて長い目で見た顧客価値を判断するために使います。
+広告費や販促費をどこまでかけてよいかを決める基準になります。
+
+イメージ補足：1回の買い物金額ではなく、その顧客との長期的な関係の総額を見る感覚です。
+
+## ② ちょっとだけ詳しく
+
+- Why｜何のために使うか: 顧客獲得コスト（CAC）と収益性のバランスを判断し、投資配分を最適化するため。
+- Who｜誰（どんな役職・スキルセットの人）が主に使うか: マーケ担当、EC運営、プロダクトマネージャー、経営企画、データ分析担当。
+- When｜どんな場面で使うか: 広告予算策定、CRM施策評価、サブスク価格見直し、チャネル比較。
+- Where｜どこで動く/使うか（社内・クラウド・端末など）: BIダッシュボード、MA/CRMツール、EC基盤、会計データ連携環境。
+- How｜どうやって使うか: 1）顧客単位の売上・継続期間・粗利データを集計する 2）LTVを算出しセグメント別に比較する 3）CACと並べて採算ラインを判定する 4）高LTV施策へ予算を寄せて改善を回す
+- できること｜導入後の実務効果:
+  - 短期売上だけでは見えない、収益性の高い顧客層を特定できる
+  - 広告・販促の上限投資額を合理的に設定できる
+  - 継続率改善やアップセル施策の優先順位を明確化できる
+- よくある誤解｜似た用語との差分: LTVは売上単価そのものではなく、継続期間や利益率まで含めた長期価値の指標。
+
+## ③ もっと知りたい人向け
+
+- 公式サイト/公式ドキュメント:
+  - [Google検索: Customer Lifetime Value official documentation](https://www.google.com/search?q=Customer+Lifetime+Value+official+documentation)
+  - [HubSpot: Customer Lifetime Value (CLV)](https://blog.hubspot.com/service/grow-customer-lifetime-value)
+  - [Shopify: Customer Lifetime Value (LTV)](https://www.shopify.com/blog/customer-lifetime-value)

@@ -2,7 +2,7 @@
 titleJa: KPI
 titleEn: Key Performance Indicator
 tags: [経営]
-related: [kgi, ksf, pmo, roi]
+related: [kgi, ksf, pmo, roi, csr]
 ---
 
 ## ① 非エンジニア向けのざっくり概要
