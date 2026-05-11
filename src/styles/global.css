@@ -32,6 +32,8 @@
 
 /* ライト（既定）— ニュートラル＋ブルーアクセント（IT寄りのクリーンさ） */
 html {
+  /* 縦スクロールの出し入れでヘッダー全体が横にズレないようにする */
+  scrollbar-gutter: stable;
   color-scheme: light dark;
   --bg: #f8f9fa;
   --surface: #ffffff;
@@ -445,6 +447,8 @@ details.term-tier[data-tier='intermediate'] .markdown-body hr {
 
 /* 参照トンマナ（ロゴの紺・白ベース・細罫線）。本文テーマとは独立 */
 .site-header.site-header--dictionary {
+  position: relative;
+  z-index: 2;
   --dict-ink: #0c1829;
   --dict-paper: #ffffff;
   --dict-rule: rgba(12, 24, 41, 0.22);
@@ -483,6 +487,13 @@ details.term-tier[data-tier='intermediate'] .markdown-body hr {
   overflow: visible;
 }
 
+/* アクティブで文字幅が変わって折り返しが起きるとロゴ位置が跳ぶため、十分な幅では1行に固定 */
+@media (min-width: 400px) {
+  .site-header.site-header--dictionary .inner {
+    flex-wrap: nowrap;
+  }
+}
+
 .header-actions {
   display: flex;
   align-items: center;
@@ -499,6 +510,7 @@ details.term-tier[data-tier='intermediate'] .markdown-body hr {
 
 .site-header.site-header--dictionary .brand__link {
   display: block;
+  flex-shrink: 0;
   line-height: 0;
   text-decoration: none;
   color: inherit;
@@ -534,6 +546,8 @@ details.term-tier[data-tier='intermediate'] .markdown-body hr {
 .site-header.site-header--dictionary .header-actions {
   overflow: visible;
   gap: 0.4rem;
+  /* タブ列ごと下げ、トグルと揃えたまま境界線へ重ねる */
+  transform: translateY(5px);
 }
 
 .site-header.site-header--dictionary .header-nav--index {
@@ -585,7 +599,8 @@ details.term-tier[data-tier='intermediate'] .markdown-body hr {
 
 .site-header.site-header--dictionary .header-tab.is-active {
   background: var(--dict-tab-active);
-  font-weight: 700;
+  /* 700 にするとラベル幅が変わり、flex でロゴが横に跳ぶことがある */
+  font-weight: 600;
   filter: drop-shadow(0 0 0 3.5px var(--dict-ink));
   box-shadow:
     0 5px 0 0 var(--dict-ink),
@@ -612,6 +627,8 @@ details.term-tier[data-tier='intermediate'] .markdown-body hr {
 }
 
 .home-intro {
+  position: relative;
+  z-index: 0;
   border-bottom: 1px solid var(--alphabet-strip-border);
   background: var(--surface);
 }
@@ -634,6 +651,8 @@ details.term-tier[data-tier='intermediate'] .markdown-body hr {
 }
 
 .alphabet-strip {
+  position: relative;
+  z-index: 0;
   background: var(--alphabet-strip-bg);
   border-bottom: 1px solid var(--alphabet-strip-border);
   padding: 1rem 0 1.25rem;
