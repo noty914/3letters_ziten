@@ -3,7 +3,7 @@ titleJa: IoT
 titleEn: Internet of Things
 titleEnJa: モノのインターネット
 tags: [ネットワーク]
-related: [api, dns]
+related: [dns]
 ---
 
 ## ① 非エンジニア向けのざっくり概要

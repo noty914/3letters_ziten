@@ -3,7 +3,7 @@ titleJa: CLI
 titleEn: Command Line Interface
 titleEnJa: コマンドライン・インタフェース
 tags: [開発]
-related: [gui, ide]
+related: [gui, ide, sdk]
 ---
 
 ## ① 非エンジニア向けのざっくり概要

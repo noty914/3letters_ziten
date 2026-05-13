@@ -3,7 +3,7 @@ titleJa: LLM
 titleEn: Large Language Model
 titleEnJa: 大規模言語モデル
 tags: [AI]
-related: [api, cpu, geo, gpu, mcp, rag]
+related: [cpu, geo, gpu, mcp, rag]
 ---
 
 ## ① 非エンジニア向けのざっくり概要

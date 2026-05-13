@@ -3,7 +3,7 @@ titleJa: App
 titleEn: Application
 titleEnJa: アプリケーション
 tags: [開発]
-related: [api, gui, ide]
+related: [api, gui, ide, sdk]
 ---
 
 ## ① 非エンジニア向けのざっくり概要

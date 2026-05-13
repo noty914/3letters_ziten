@@ -3,7 +3,7 @@ titleJa: XML
 titleEn: Extensible Markup Language
 titleEnJa: 拡張可能マークアップ言語
 tags: [データ]
-related: [api, csv]
+related: [csv]
 ---
 
 ## ① 非エンジニア向けのざっくり概要
